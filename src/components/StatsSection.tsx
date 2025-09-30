@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { useEffect, useState } from 'react';
 import { TrendingUp, Users, GraduationCap, Award, BookOpen, Calendar, Bell, Target } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -54,7 +53,6 @@ const StatsSection: React.FC = () => {
       icon: GraduationCap,
       isCounter: true,
       color: 'from-green-500 to-green-600'
-=======
 import React from 'react';
 import { TrendingUp } from 'lucide-react';
 
@@ -69,34 +67,26 @@ const StatsSection: React.FC = () => {
       number: '81+',
       label: 'Expert Teachers',
       description: 'Qualified educators with advanced degrees',
->>>>>>> 4cc650e723a573cbd852d2ec4570084b885198d2
     },
     {
       number: '95%',
       label: 'Success Rate',
       description: 'Students achieving their academic goals',
-<<<<<<< HEAD
       icon: Award,
       isCounter: false,
       color: 'from-yellow-500 to-yellow-600'
-=======
->>>>>>> 4cc650e723a573cbd852d2ec4570084b885198d2
     },
     {
       number: '25+',
       label: 'Years Excellence',
       description: 'Proven track record in education',
-<<<<<<< HEAD
       icon: BookOpen,
       isCounter: false,
       color: 'from-purple-500 to-purple-600'
-=======
->>>>>>> 4cc650e723a573cbd852d2ec4570084b885198d2
     },
   ];
 
   return (
-<<<<<<< HEAD
     <section className="py-20 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 relative overflow-hidden">
       {/* Animated background */}
       <div className="absolute inset-0">
@@ -228,7 +218,6 @@ const StatsSection: React.FC = () => {
             <p className="text-blue-200">Affiliated Board</p>
           </div>
         </motion.div>
-=======
     <section className="bg-gradient-to-r from-gray-900 to-gray-800 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
@@ -263,7 +252,6 @@ const StatsSection: React.FC = () => {
             </div>
           ))}
         </div>
->>>>>>> 4cc650e723a573cbd852d2ec4570084b885198d2
       </div>
     </section>
   );

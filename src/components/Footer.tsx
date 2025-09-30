@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-<<<<<<< HEAD
 import { MapPin, Phone, Mail, Facebook, Twitter, Instagram, Linkedin, GraduationCap, Heart, ExternalLink } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const Footer: React.FC = () => {
-=======
 import { MapPin, Phone, Mail, Facebook, Twitter, Instagram, Linkedin, GraduationCap } from 'lucide-react';
 
 const Footer: React.FC = () => {
   // Track logged in user role for portal link
->>>>>>> 4cc650e723a573cbd852d2ec4570084b885198d2
   const [portal, setPortal] = useState<{ label: string; to: string }>(
     { label: 'Student Portal', to: '/student-dashboard' }
   );
@@ -24,14 +21,12 @@ const Footer: React.FC = () => {
           setPortal({ label: 'Teacher Portal', to: '/teacher-dashboard' });
         } else if (user && user.loggedAs === 'student') {
           setPortal({ label: 'Student Portal', to: '/student-dashboard' });
-<<<<<<< HEAD
         }
       }
     } catch (e) {
       // ignore
     }
     
-=======
         } else {
           setPortal({ label: 'Student Portal', to: '/student-dashboard' });
         }
@@ -42,7 +37,6 @@ const Footer: React.FC = () => {
       setPortal({ label: 'Student Portal', to: '/student-dashboard' });
     }
     // Listen for login/logout events
->>>>>>> 4cc650e723a573cbd852d2ec4570084b885198d2
     const handler = () => {
       try {
         const raw = localStorage.getItem('loggedUser');
@@ -52,11 +46,8 @@ const Footer: React.FC = () => {
             setPortal({ label: 'Teacher Portal', to: '/teacher-dashboard' });
           } else if (user && user.loggedAs === 'student') {
             setPortal({ label: 'Student Portal', to: '/student-dashboard' });
-<<<<<<< HEAD
-=======
           } else {
             setPortal({ label: 'Student Portal', to: '/student-dashboard' });
->>>>>>> 4cc650e723a573cbd852d2ec4570084b885198d2
           }
         } else {
           setPortal({ label: 'Student Portal', to: '/student-dashboard' });
@@ -68,7 +59,6 @@ const Footer: React.FC = () => {
     window.addEventListener('authChanged', handler);
     return () => window.removeEventListener('authChanged', handler);
   }, []);
-<<<<<<< HEAD
 
   const quickLinks = [
     { to: '/about', label: 'About Us' },
@@ -240,7 +230,6 @@ const Footer: React.FC = () => {
                 </a>
               </div>
             </motion.div>
-=======
   return (
     <footer className="bg-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -294,12 +283,10 @@ const Footer: React.FC = () => {
                 <li><Link to="/calendar" className="text-gray-300 hover:text-yellow-400 transition-colors duration-200 text-sm">Calendar</Link></li>
               </ul>
             </div>
->>>>>>> 4cc650e723a573cbd852d2ec4570084b885198d2
           </div>
         </div>
 
         {/* Bottom Section */}
-<<<<<<< HEAD
         <div className="border-t border-white/10 py-8">
           <div className="flex flex-col lg:flex-row justify-between items-center gap-6">
             <motion.div 
@@ -339,7 +326,6 @@ const Footer: React.FC = () => {
                 </motion.a>
               ))}
             </motion.div>
-=======
         <div className="border-t border-gray-800 py-4">
           <div className="flex flex-col sm:flex-row justify-between items-center">
             <div className="text-gray-300 text-sm mb-4 sm:mb-0">
@@ -359,7 +345,6 @@ const Footer: React.FC = () => {
                 <Linkedin className="w-5 h-5" />
               </a>
             </div>
->>>>>>> 4cc650e723a573cbd852d2ec4570084b885198d2
           </div>
         </div>
       </div>

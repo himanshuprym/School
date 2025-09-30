@@ -1,30 +1,23 @@
 import React from 'react';
-<<<<<<< HEAD
 import { BookOpen, Users, Award, Calendar, Bell, Shield, Laptop, Globe, Clock, Star, Zap, Target } from 'lucide-react';
 import { motion } from 'framer-motion';
 import FeatureCard from './ui/FeatureCard';
-=======
 import { BookOpen, Users, Award, Calendar, Bell, Shield } from 'lucide-react';
->>>>>>> 4cc650e723a573cbd852d2ec4570084b885198d2
 
 const FeaturesSection: React.FC = () => {
   const features = [
     {
       icon: BookOpen,
-<<<<<<< HEAD
       title: 'CBSE Excellence',
       description: 'Comprehensive CBSE curriculum with modern teaching methodologies and continuous assessment for holistic development.',
       color: 'bg-gradient-to-br from-blue-500 to-blue-600',
-=======
       title: 'Academic Excellence',
       description: 'Comprehensive curriculum designed to nurture critical thinking and creativity.',
       color: 'bg-blue-500',
->>>>>>> 4cc650e723a573cbd852d2ec4570084b885198d2
     },
     {
       icon: Users,
       title: 'Expert Faculty',
-<<<<<<< HEAD
       description: 'Team of 81 dedicated educators including IITians and NEET-qualified teachers committed to student success.',
       color: 'bg-gradient-to-br from-green-500 to-green-600',
     },
@@ -45,7 +38,6 @@ const FeaturesSection: React.FC = () => {
       title: '95% Success Rate',
       description: 'Proven track record of academic excellence with students achieving outstanding results in board exams.',
       color: 'bg-gradient-to-br from-red-500 to-red-600',
-=======
       description: 'Experienced educators dedicated to student success and personal growth.',
       color: 'bg-green-500',
     },
@@ -66,12 +58,10 @@ const FeaturesSection: React.FC = () => {
       title: 'Live Updates',
       description: 'Real-time notifications and announcements to keep everyone informed.',
       color: 'bg-red-500',
->>>>>>> 4cc650e723a573cbd852d2ec4570084b885198d2
     },
     {
       icon: Shield,
       title: 'Safe Environment',
-<<<<<<< HEAD
       description: 'Secure and nurturing campus environment where students can learn, grow, and develop their full potential.',
       color: 'bg-gradient-to-br from-indigo-500 to-indigo-600',
     },
@@ -92,15 +82,12 @@ const FeaturesSection: React.FC = () => {
       title: 'Modern Facilities',
       description: 'State-of-the-art infrastructure with well-equipped labs, library, and sports facilities for comprehensive learning.',
       color: 'bg-gradient-to-br from-yellow-500 to-yellow-600',
-=======
       description: 'Secure and nurturing environment where students can thrive and learn.',
       color: 'bg-indigo-500',
->>>>>>> 4cc650e723a573cbd852d2ec4570084b885198d2
     },
   ];
 
   return (
-<<<<<<< HEAD
     <section className="py-20 bg-gradient-to-br from-gray-50 via-white to-blue-50 relative overflow-hidden">
       {/* Background decorations */}
       <div className="absolute inset-0">
@@ -202,7 +189,6 @@ const FeaturesSection: React.FC = () => {
             </div>
           </div>
         </motion.div>
-=======
     <section className="py-12 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
@@ -233,7 +219,6 @@ const FeaturesSection: React.FC = () => {
             </div>
           ))}
         </div>
->>>>>>> 4cc650e723a573cbd852d2ec4570084b885198d2
       </div>
     </section>
   );

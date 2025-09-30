@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -10,7 +9,6 @@ import toast from 'react-hot-toast';
 
 interface StudentData extends Student {
   loggedAs?: string;
-=======
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -22,13 +20,11 @@ interface StudentData {
   className: string;
   section: string;
   profilePhoto: string;
->>>>>>> 4cc650e723a573cbd852d2ec4570084b885198d2
 }
 
 const StudentDashboard: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-<<<<<<< HEAD
   const [student, setStudent] = useState<StudentData | null>(null);
   const [homework, setHomework] = useState<any[]>([]);
   const [attendance, setAttendance] = useState<any[]>([]);
@@ -100,7 +96,6 @@ const StudentDashboard: React.FC = () => {
   };
 
   if (!student) {
-=======
   // Prefer route state, otherwise fall back to localStorage session
   let student: StudentData | undefined = location.state?.user;
   let loggedUser: any = null;
@@ -133,7 +128,6 @@ const StudentDashboard: React.FC = () => {
       );
     }
 
->>>>>>> 4cc650e723a573cbd852d2ec4570084b885198d2
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
         <div className="text-center">
@@ -150,7 +144,6 @@ const StudentDashboard: React.FC = () => {
     );
   }
 
-<<<<<<< HEAD
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -389,7 +382,6 @@ const StudentDashboard: React.FC = () => {
               )}
             </ModernCard>
           </motion.div>
-=======
   // Small helper fallbacks
   const photoSrc = student.profilePhoto || '/assest/logo.png';
   const attendance = '96%'; // placeholder - replace with real data when available
@@ -571,7 +563,6 @@ const StudentDashboard: React.FC = () => {
             </div>
 
           </div>
->>>>>>> 4cc650e723a573cbd852d2ec4570084b885198d2
         </div>
       </div>
     </div>

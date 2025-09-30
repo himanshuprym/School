@@ -1,29 +1,22 @@
 import React from 'react';
-<<<<<<< HEAD
 import { motion } from 'framer-motion';
 import { GraduationCap, Award, Users, Mail, Phone } from 'lucide-react';
-=======
 
 const themeYellow = '#fcd116';
 const themeBlue = '#2563eb';
->>>>>>> 4cc650e723a573cbd852d2ec4570084b885198d2
 
 const team = [
   {
     name: 'MR MANOJ KUMAR',
     title: 'Director',
     img: 'https://www.ssaami.ac.in/director.jpeg',
-<<<<<<< HEAD
     description: 'Visionary leader with 25+ years of experience in educational administration and student development.',
     achievements: ['Educational Leadership', 'Institution Building', 'Student Mentorship']
-=======
->>>>>>> 4cc650e723a573cbd852d2ec4570084b885198d2
   },
   {
     name: 'MRS KUNDAN SINGH',
     title: 'Principal',
     img: 'https://www.ssaami.ac.in/principal.jpeg',
-<<<<<<< HEAD
     description: 'Dedicated educator committed to academic excellence and holistic development of students.',
     achievements: ['Academic Excellence', 'Curriculum Development', 'Faculty Leadership']
   },
@@ -169,7 +162,6 @@ const TeamSection: React.FC = () => {
 };
 
 export default TeamSection;
-=======
   },
 ];
 
@@ -191,4 +183,3 @@ const TeamSection: React.FC = () => (
 );
 
 export default TeamSection;
->>>>>>> 4cc650e723a573cbd852d2ec4570084b885198d2

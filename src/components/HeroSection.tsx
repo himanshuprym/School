@@ -1,5 +1,4 @@
 import React from 'react';
-<<<<<<< HEAD
 import { ArrowRight, BookOpen, Star, Heart, Lightbulb, Sparkles, GraduationCap, Users, Award } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -223,7 +222,6 @@ const HeroSection: React.FC = () => {
           />
         </motion.div>
       </motion.div>
-=======
 import { ArrowRight, BookOpen, Star, Heart, Lightbulb } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -302,7 +300,6 @@ const HeroSection: React.FC = () => {
           </div>
         </div>
       </div>
->>>>>>> 4cc650e723a573cbd852d2ec4570084b885198d2
     </section>
   );
 };

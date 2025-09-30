@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React from 'react';
 import { motion } from 'framer-motion';
 import { GraduationCap, Users, Award, BookOpen, Target, Heart, Star, Calendar } from 'lucide-react';
@@ -240,7 +239,6 @@ const About: React.FC = () => {
 };
 
 export default About;
-=======
 
 import React from 'react';
 
@@ -276,4 +274,3 @@ const About: React.FC = () => {
 };
 
 export default About;
->>>>>>> 4cc650e723a573cbd852d2ec4570084b885198d2

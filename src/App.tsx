@@ -1,8 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-<<<<<<< HEAD
 import { Toaster } from 'react-hot-toast';
-=======
->>>>>>> 4cc650e723a573cbd852d2ec4570084b885198d2
 import Header from './components/Header';
 import HeroSection from './components/HeroSection';
 import LoginSection from './components/LoginSection';
@@ -23,7 +20,6 @@ import SearchResults from './components/pages/SearchResults';
 
 function App() {
   return (
-<<<<<<< HEAD
     <>
       <Router>
         <div className="min-h-screen">
@@ -90,7 +86,6 @@ function App() {
         }}
       />
     </>
-=======
     <Router>
       <div className="min-h-screen">
         <Header />
@@ -120,7 +115,6 @@ function App() {
         <Footer />
       </div>
     </Router>
->>>>>>> 4cc650e723a573cbd852d2ec4570084b885198d2
   );
 }
 

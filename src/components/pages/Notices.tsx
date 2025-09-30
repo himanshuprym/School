@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { useState, useEffect } from 'react';
 import { ChevronDown, Bell, Calendar, User, CircleAlert as AlertCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -69,7 +68,6 @@ const Notices: React.FC = () => {
       setLoading(false);
     }
   };
-=======
 import React, { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 
@@ -81,13 +79,11 @@ const sampleNotices = [
 
 const Notices: React.FC = () => {
   const [expandedId, setExpandedId] = useState<string | null>(null);
->>>>>>> 4cc650e723a573cbd852d2ec4570084b885198d2
 
   const toggle = (id: string) => {
     setExpandedId(prev => (prev === id ? null : id));
   };
 
-<<<<<<< HEAD
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'high': return 'text-red-600 bg-red-50 border-red-200';
@@ -110,14 +106,11 @@ const Notices: React.FC = () => {
     ? notices 
     : notices.filter(notice => notice.priority === filter);
 
-=======
->>>>>>> 4cc650e723a573cbd852d2ec4570084b885198d2
   const excerpt = (text: string, len = 120) => {
     if (text.length <= len) return text;
     return text.slice(0, len).trimEnd() + '…';
   };
 
-<<<<<<< HEAD
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -285,7 +278,6 @@ const Notices: React.FC = () => {
             </p>
           </motion.div>
         )}
-=======
   return (
     <div className="max-w-4xl mx-auto py-12 px-4">
       <h2 className="text-2xl font-bold mb-6">Recent Notices</h2>
@@ -329,14 +321,10 @@ const Notices: React.FC = () => {
             </article>
           );
         })}
->>>>>>> 4cc650e723a573cbd852d2ec4570084b885198d2
       </div>
     </div>
   );
 };
 
-<<<<<<< HEAD
 export default Notices;
-=======
 export default Notices;
->>>>>>> 4cc650e723a573cbd852d2ec4570084b885198d2
