@@ -1,5 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+<<<<<<< HEAD
 import { Toaster } from 'react-hot-toast';
+=======
+>>>>>>> 4cc650e723a573cbd852d2ec4570084b885198d2
 import Header from './components/Header';
 import HeroSection from './components/HeroSection';
 import LoginSection from './components/LoginSection';
@@ -20,6 +23,7 @@ import SearchResults from './components/pages/SearchResults';
 
 function App() {
   return (
+<<<<<<< HEAD
     <>
       <Router>
         <div className="min-h-screen">
@@ -86,6 +90,37 @@ function App() {
         }}
       />
     </>
+=======
+    <Router>
+      <div className="min-h-screen">
+        <Header />
+        <main>
+          <Routes>
+            <Route path="/" element={
+              <>
+                <HeroSection />
+                <LoginSection />
+                <FeaturesSection />
+                <StatsSection />
+              </>
+            } />
+            <Route path="/about" element={<About />} />
+            <Route path="/neev" element={<Neev />} />
+            <Route path="/team" element={<TeamSection />} />
+            <Route path="/gallery" element={<Gallery />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/apply-admission" element={<ApplyAdmission />} />
+            <Route path="/student-dashboard" element={<StudentDashboard />} />
+            <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
+            <Route path="/notices" element={<Notices />} />
+            <Route path="/search" element={<SearchResults />} />
+            {/* Add more routes here as you create more pages */}
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+    </Router>
+>>>>>>> 4cc650e723a573cbd852d2ec4570084b885198d2
   );
 }
 

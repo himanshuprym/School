@@ -1,19 +1,29 @@
 import React from 'react';
+<<<<<<< HEAD
 import { motion } from 'framer-motion';
 import { GraduationCap, Award, Users, Mail, Phone } from 'lucide-react';
+=======
+
+const themeYellow = '#fcd116';
+const themeBlue = '#2563eb';
+>>>>>>> 4cc650e723a573cbd852d2ec4570084b885198d2
 
 const team = [
   {
     name: 'MR MANOJ KUMAR',
     title: 'Director',
     img: 'https://www.ssaami.ac.in/director.jpeg',
+<<<<<<< HEAD
     description: 'Visionary leader with 25+ years of experience in educational administration and student development.',
     achievements: ['Educational Leadership', 'Institution Building', 'Student Mentorship']
+=======
+>>>>>>> 4cc650e723a573cbd852d2ec4570084b885198d2
   },
   {
     name: 'MRS KUNDAN SINGH',
     title: 'Principal',
     img: 'https://www.ssaami.ac.in/principal.jpeg',
+<<<<<<< HEAD
     description: 'Dedicated educator committed to academic excellence and holistic development of students.',
     achievements: ['Academic Excellence', 'Curriculum Development', 'Faculty Leadership']
   },
@@ -159,3 +169,26 @@ const TeamSection: React.FC = () => {
 };
 
 export default TeamSection;
+=======
+  },
+];
+
+const TeamSection: React.FC = () => (
+  <section className="py-16 bg-white">
+    <div className="max-w-4xl mx-auto px-4">
+      <h2 className="text-3xl font-extrabold mb-8 text-center" style={{ color: themeBlue }}>SSA TEAM</h2>
+      <div className="flex flex-col md:flex-row justify-center gap-10">
+        {team.map(member => (
+          <div key={member.name} className="flex flex-col items-center bg-white rounded-xl shadow-lg p-6 border-4" style={{ borderColor: themeYellow }}>
+            <img src={member.img} alt={member.name} className="w-32 h-32 rounded-full object-cover mb-4 border-4" style={{ borderColor: themeBlue }} />
+            <h3 className="text-xl font-bold mb-1" style={{ color: themeBlue }}>{member.name}</h3>
+            <p className="text-yellow-600 font-semibold">{member.title}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+);
+
+export default TeamSection;
+>>>>>>> 4cc650e723a573cbd852d2ec4570084b885198d2
