@@ -132,16 +132,17 @@ const HeroSection: React.FC = () => {
                 whileTap={{ scale: 0.95 }}
               >
                 <Link 
-                to="/apply-admission" 
+                  to="/apply-admission" 
                   className="group relative bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 text-gray-900 px-10 py-5 rounded-3xl font-bold transition-all duration-500 flex items-center justify-center space-x-3 shadow-2xl hover:shadow-yellow-500/50 overflow-hidden"
                 >
                   {/* Animated background */}
                   <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 transform translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-1000" />
-                <span>Apply for Admission</span>
+                  <span className="relative z-10">Apply for Admission</span>
                   <motion.div
                     animate={{ x: [0, 5, 0] }}
                     transition={{ duration: 2, repeat: Infinity }}
+                    className="relative z-10"
                   >
                     <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform duration-300" />
                   </motion.div>
@@ -153,13 +154,13 @@ const HeroSection: React.FC = () => {
                 whileTap={{ scale: 0.95 }}
               >
                 <Link 
-                to="/about" 
+                  to="/about" 
                   className="group relative bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white px-10 py-5 rounded-3xl font-bold transition-all duration-500 flex items-center justify-center space-x-3 border border-white/30 hover:border-white/50 shadow-xl hover:shadow-2xl overflow-hidden"
                 >
                   {/* Ripple effect */}
                   <div className="absolute inset-0 bg-white/5 scale-0 group-hover:scale-100 transition-transform duration-500 rounded-3xl" />
-                <span>Learn More</span>
-                <BookOpen className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
+                  <span className="relative z-10">Learn More</span>
+                  <BookOpen className="w-5 h-5 group-hover:scale-110 transition-transform duration-200 relative z-10" />
                 </Link>
               </motion.div>
               
@@ -256,12 +257,12 @@ const HeroSection: React.FC = () => {
 
             {/* Floating Achievement Icons */}
             {[
-              { icon: BookOpen, position: 'top-16 left-12 lg:top-20 lg:left-16', gradient: 'from-blue-500 to-cyan-500', rotation: 12, delay: 0 },
-              { icon: Star, position: 'top-32 right-16 lg:top-40 lg:right-20', gradient: 'from-green-500 to-emerald-500', rotation: -10, delay: 0.5 },
-              { icon: Award, position: 'bottom-20 left-20 lg:bottom-24 lg:left-24', gradient: 'from-purple-500 to-pink-500', rotation: 15, delay: 1 },
-              { icon: Users, position: 'bottom-32 right-12 lg:bottom-40 lg:right-16', gradient: 'from-orange-500 to-red-500', rotation: -15, delay: 1.5 },
-              { icon: Heart, position: 'top-1/2 left-8 lg:left-12', gradient: 'from-pink-500 to-rose-500', rotation: 20, delay: 2 },
-              { icon: Lightbulb, position: 'top-1/2 right-8 lg:right-12', gradient: 'from-yellow-500 to-amber-500', rotation: -20, delay: 2.5 }
+              { icon: BookOpen, position: 'top-16 left-12 lg:top-20 lg:left-16', gradient: 'blue', rotation: 12, delay: 0 },
+              { icon: Star, position: 'top-32 right-16 lg:top-40 lg:right-20', gradient: 'green', rotation: -10, delay: 0.5 },
+              { icon: Award, position: 'bottom-20 left-20 lg:bottom-24 lg:left-24', gradient: 'purple', rotation: 15, delay: 1 },
+              { icon: Users, position: 'bottom-32 right-12 lg:bottom-40 lg:right-16', gradient: 'orange', rotation: -15, delay: 1.5 },
+              { icon: Heart, position: 'top-1/2 left-8 lg:left-12', gradient: 'pink', rotation: 20, delay: 2 },
+              { icon: Lightbulb, position: 'top-1/2 right-8 lg:right-12', gradient: 'yellow', rotation: -20, delay: 2.5 }
             ].map((item, index) => (
               <motion.div
                 key={index}
@@ -282,8 +283,9 @@ const HeroSection: React.FC = () => {
                 whileHover={{ scale: 1.2, rotate: item.rotation + 20 }}
               >
                 <GlassCard 
-                  gradient={item.gradient.includes('blue') ? 'blue' : item.gradient.includes('green') ? 'green' : item.gradient.includes('purple') ? 'purple' : item.gradient.includes('orange') ? 'orange' : 'pink'}
-                  className={`p-4 transform rotate-${Math.abs(item.rotation)} shadow-2xl group-hover:shadow-3xl transition-all duration-300`}
+                  gradient={item.gradient as any}
+                  className="p-4 shadow-2xl group-hover:shadow-3xl transition-all duration-300"
+                  style={{ transform: `rotate(${item.rotation}deg)` }}
                 >
                   <item.icon className="w-6 h-6 lg:w-8 lg:h-8 text-white" />
                 </GlassCard>

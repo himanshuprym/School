@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { User, Lock, ChevronDown, LogIn, LogOut, GraduationCap, BookOpen, Users } from 'lucide-react';
+import { User, Lock, ChevronDown, LogIn, LogOut, GraduationCap, BookOpen, Users, Sparkles, Shield } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { supabase, signInWithCredentials } from '../lib/supabase';
 import toast from 'react-hot-toast';
 import LoadingSpinner from './ui/LoadingSpinner';
-import { User, Lock, ChevronDown, LogIn, LogOut } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import ModernCard from './ui/ModernCard';
+import GlassCard from './ui/GlassCard';
+import AnimatedBackground from './ui/AnimatedBackground';
 
 // Minimal fallback users in case fetch fails
 const FALLBACK_USERS = [
@@ -41,20 +42,15 @@ const FALLBACK_TEACHERS = [
 
 const LoginSection: React.FC = () => {
   const [admissionId, setAdmissionId] = useState('');
-  const [teacherId, setTeacherId] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('123');
   const [role, setRole] = useState('student');
   const [showRoleDropdown, setShowRoleDropdown] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [password, setPassword] = useState('');
-  const [role, setRole] = useState('student');
-  const [showRoleDropdown, setShowRoleDropdown] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [users, setUsers] = useState<any[]>(FALLBACK_USERS);
   const [teachers, setTeachers] = useState<any[]>(FALLBACK_TEACHERS);
-  const [loading, setLoading] = useState(true);
   const [dataError, setDataError] = useState('');
   const [loggedUser, setLoggedUser] = useState<any>(null);
   const navigate = useNavigate();
@@ -122,130 +118,12 @@ const LoginSection: React.FC = () => {
     { value: 'admin', label: 'Administrator', icon: Users, color: 'from-purple-500 to-purple-600' },
   ];
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
     try {
-      let credentials: any = {};
-      
-      if (role === 'student') {
-        credentials.admission_id = admissionId;
-      } else if (role === 'teacher') {
-        credentials.teacher_id = teacherId;
-      } else if (role === 'admin') {
-        credentials.email = email;
-      }
-
-      const { user, error } = await signInWithCredentials(credentials, password, role);
-
-      if (error || !user) {
-        toast.error('Invalid credentials. Please try again.');
-        return;
-      }
-
-      const userState = {
-        ...user,
-        loggedAs: role,
-      };
-
-      localStorage.setItem('loggedUser', JSON.stringify(userState));
-      setLoggedUser(userState);
-      
-      window.dispatchEvent(new CustomEvent('authChanged', { detail: userState }));
-      
-      toast.success('Welcome back!');
-
-      if (role === 'teacher') {
-        navigate('/teacher-dashboard', { state: { user: userState } });
-      } else {
-        navigate('/student-dashboard', { state: { user: userState } });
-      }
-    } catch (error) {
-      toast.error('Login failed. Please try again.');
-    } finally {
-      setLoading(false);
-    { value: 'student', label: 'Student' },
-    { value: 'teacher', label: 'Teacher' },
-    { value: 'admin', label: 'Administrator' },
-  ];
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-    setSuccess('');
-
-  const normalize = (s: any) => (typeof s === 'string' ? s.trim().toLowerCase() : '');
-  const pass = String(password || '').trim();
-
-    let user: any = null;
-    if (role === 'student') {
-      user = users.find(u => normalize(u.admissionId) === normalize(admissionId) && String(u.password || '').trim() === pass);
-    } else if (role === 'teacher') {
-      // look up in teachers list specifically
-      user = teachers.find(t => (
-        (t.teacherId && normalize(t.teacherId) === normalize(teacherId)) ||
-        normalize(t.email) === normalize(teacherId) ||
-        normalize(t.teacherId) === normalize(teacherId)
-      ) && String(t.password || '').trim() === pass);
-      // fall back to users list if not found (in case teacher is stored there)
-      if (!user) {
-        user = users.find(u => (
-          (u.teacherId && normalize(u.teacherId) === normalize(teacherId)) ||
-          normalize(u.admissionId) === normalize(teacherId) ||
-          normalize(u.email) === normalize(teacherId)
-        ) && String(u.password || '').trim() === pass);
-      }
-    } else if (role === 'admin') {
-      user = users.find(u => normalize(u.email) === normalize(email) && String(u.password || '').trim() === pass);
-    }
-
-    if (!user) {
-      setError('Invalid credentials.');
-      return;
-    }
-
-    const userState = {
-      name: user.name,
-      dob: user.dob,
-      admissionId: user.admissionId,
-      teacherId: user.teacherId,
-      bloodGroup: user.bloodGroup,
-      className: user.className,
-      section: user.section,
-      profilePhoto: user.profilePhoto,
-      roles: user.roles || [],
-      loggedAs: role, // record which role was used to login
-    };
-
-    try {
-      localStorage.setItem('loggedUser', JSON.stringify(userState));
+      localStorage.removeItem('loggedUser');
     } catch (e) {
       // ignore
     }
-
-    setLoggedUser(userState);
-    // notify other components
-    try {
-      window.dispatchEvent(new CustomEvent('authChanged', { detail: userState }));
-    } catch (e) {
-      // ignore (older browsers)
-    }
-    setSuccess('Login successful!');
-
-    // navigate to role-specific dashboard
-    if (role === 'teacher') {
-      navigate('/teacher-dashboard', { state: { user: userState } });
-    } else {
-      navigate('/student-dashboard', { state: { user: userState } });
-    }
-  };
-
-  const handleLogout = (e?: React.MouseEvent) => {
-    if (e) e.stopPropagation();
-    localStorage.removeItem('loggedUser');
-    setLoggedUser(null);
-    window.dispatchEvent(new CustomEvent('authChanged', { detail: null }));
+    e.preventDefault();
     toast.success('Logged out successfully');
     try {
       window.dispatchEvent(new CustomEvent('authChanged', { detail: null }));
@@ -268,195 +146,248 @@ const LoginSection: React.FC = () => {
 
   return (
     <section className="relative py-20 bg-gradient-to-br from-gray-50 via-white to-blue-50 overflow-hidden">
+    <section className="relative py-20 bg-gradient-to-br from-indigo-50 via-white to-purple-50 overflow-hidden">
       {/* Background decorations */}
+      <AnimatedBackground variant="geometric" />
       <div className="absolute inset-0">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-blue-200/20 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-20 right-10 w-72 h-72 bg-yellow-200/20 rounded-full blur-3xl"></div>
+        <div className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-br from-pink-400/20 to-orange-400/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-cyan-400/10 to-blue-400/10 rounded-full blur-3xl animate-pulse delay-500"></div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Access Your Portal
-          </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+            className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-2xl"
+          >
+            <Shield className="w-10 h-10 text-white" />
+          </motion.div>
+          <motion.h2 
+            className="text-4xl md:text-5xl font-bold mb-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+          >
+            <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+              Access Your Portal
+            </span>
+          </motion.h2>
+          <motion.p 
+            className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+          >
             Sign in to access your personalized dashboard and stay connected with your academic journey
-          </p>
+          </motion.p>
         </motion.div>
 
         <div className="max-w-md mx-auto">
           {loggedUser ? (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
+            <GlassCard
+              gradient="blue"
+              blur="lg"
               onClick={goToDashboard}
               role="button"
               tabIndex={0}
-              className="group bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border border-white/20 cursor-pointer hover:shadow-3xl transition-all duration-500 hover:scale-105"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6 }}
+              onClick={goToDashboard}
+              role="button"
+              tabIndex={0}
+              className="group cursor-pointer transition-all duration-500 hover:scale-105 p-8"
             >
-              <div className="flex items-center gap-6">
+              <div className="flex items-center gap-6 relative">
+                {/* Animated glow effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
+                
                 <div className="relative">
-                  <div className="w-20 h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-xl">
+                  <motion.div 
+                    className="w-20 h-24 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-xl group-hover:shadow-2xl transition-shadow duration-300"
+                    whileHover={{ rotate: [0, -5, 5, 0] }}
+                    transition={{ duration: 0.5 }}
+                  >
                     <img 
                       src={loggedUser.profile_photo || '/assest/logo.png'} 
                       alt="profile" 
-                      className="w-16 h-20 object-cover rounded-xl border-2 border-white/50" 
+                      className="w-16 h-20 object-cover rounded-xl border-2 border-white/50 group-hover:border-white/80 transition-colors duration-300" 
                     />
-                  </div>
-                  <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-green-400 to-green-500 rounded-full border-2 border-white animate-pulse"></div>
+                  </motion.div>
+                  <motion.div 
+                    className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full border-2 border-white shadow-lg"
+                    animate={{ scale: [1, 1.2, 1] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  >
+                    <div className="w-full h-full bg-gradient-to-r from-green-400 to-emerald-500 rounded-full animate-ping opacity-75" />
+                  </motion.div>
                 </div>
+                
                 <div className="flex-1">
-                  <div className="text-sm text-gray-500 font-medium mb-1">Welcome back</div>
-                  <div className="text-xl font-bold text-gray-900 mb-1">{loggedUser.name}</div>
-                  <div className="text-sm text-gray-600 mb-3">
+                  <motion.div 
+                    className="text-sm font-medium mb-1 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    Welcome back
+                  </motion.div>
+                  <motion.div 
+                    className="text-xl font-bold text-gray-900 mb-1 group-hover:text-blue-600 transition-colors duration-300"
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    {loggedUser.name}
+                  </motion.div>
+                  <motion.div 
+                    className="text-sm text-gray-600 mb-3"
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.4 }}
+                  >
                     {loggedUser.loggedAs === 'teacher' 
                       ? `Teacher ID: ${loggedUser.teacher_id}` 
                       : `Class ${loggedUser.class_name} • ${loggedUser.section}`
                     }
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">
+                  </motion.div>
+                  <motion.div 
+                    className="flex items-center gap-2"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                  >
+                    <div className="px-3 py-1 bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 rounded-full text-xs font-medium border border-blue-200/50 group-hover:from-blue-200 group-hover:to-purple-200 transition-colors duration-300">
                       {loggedUser.loggedAs === 'teacher' ? 'Teacher Portal' : 'Student Portal'}
                     </div>
-                    <button
+                    <motion.button
                       onClick={handleLogout}
                       title="Logout"
-                      className="p-2 rounded-full bg-red-50 hover:bg-red-100 text-red-600 transition-colors duration-200"
+                      className="p-2 rounded-full bg-red-50 hover:bg-red-100 text-red-600 transition-all duration-200 hover:scale-110"
+                      whileHover={{ rotate: 15 }}
+                      whileTap={{ scale: 0.9 }}
                     >
                       <LogOut className="w-4 h-4" />
-                    </button>
+                    </motion.button>
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </GlassCard>
           ) : (
-            <motion.div
+            <GlassCard
+              gradient="purple"
+              blur="lg"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-8 lg:p-10 border border-white/20"
+              transition={{ duration: 0.6 }}
+              className="p-8 lg:p-10"
             >
               <div className="text-center mb-8">
                 <motion.div
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-                  className={`w-20 h-20 bg-gradient-to-br ${currentRole?.color} rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-xl`}
+                  className={`w-20 h-20 bg-gradient-to-br ${currentRole?.color} rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-xl relative overflow-hidden group`}
                 >
+                  {/* Animated background */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 transform translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-1000" />
                   {currentRole?.icon && <currentRole.icon className="w-10 h-10 text-white" />}
                 </motion.div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">Sign In</h3>
-                <p className="text-gray-600">Choose your role and enter your credentials</p>
+                <motion.h3 
+                  className="text-3xl font-bold mb-2"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                >
+                  <span className="bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent">
+                    Sign In
+                  </span>
+                </motion.h3>
+                <motion.p 
+                  className="text-gray-600 text-lg"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                >
+                  Choose your role and enter your credentials
+                </motion.p>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="relative">
                   <label className="block text-sm font-semibold text-gray-700 mb-3">I am a</label>
-  return (
-    <section className="bg-gray-50 py-8 lg:py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md mx-auto">
-          {loggedUser ? (
-            <div
-              onClick={goToDashboard}
-              role="button"
-              tabIndex={0}
-              className="bg-white rounded-xl shadow-lg p-6 lg:p-8 border border-gray-100 flex items-center gap-4 cursor-pointer hover:shadow-xl focus:outline-none"
-            >
-              <img src={loggedUser.profilePhoto} alt="profile" className="w-16 h-18 object-cover rounded-md border-2 border-yellow-200" />
-              <div>
-                <div className="text-sm text-gray-600">Signed in as</div>
-                <div className="text-lg font-semibold text-gray-900">{loggedUser.name}</div>
-                <div className="text-sm text-gray-500">{loggedUser.loggedAs === 'teacher' ? `Teacher ID: ${loggedUser.teacherId}` : `Admission ID: ${loggedUser.admissionId}`}</div>
-              </div>
-              <div className="ml-auto">
-                <button
-                  onClick={handleLogout}
-                  title="Logout"
-                  aria-label="Logout"
-                  className="p-2 rounded-full bg-sky-50 hover:bg-sky-100 text-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-200"
-                >
-                  <LogOut className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-          ) : (
-            <div className="bg-white rounded-xl shadow-lg p-8 lg:p-8 border border-gray-100">
-              <div className="text-center mb-6">
-                <div className="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <LogIn className="w-6 h-6 text-gray-900" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-1">Login</h3>
-                <p className="text-gray-600 text-sm">Access your school account</p>
-              </div>
-
-              {loading && (
-                <div className="text-sm text-gray-500 text-center mb-3">Loading user & teacher data...</div>
-              )}
-              {dataError && (
-                <div className="text-sm text-red-600 text-center mb-3">{dataError}</div>
-              )}
-              {!loading && (
-                <div className="text-sm text-green-600 text-center mb-3">
-                  {role === 'teacher' ? `Loaded ${teachers.length} teacher(s)` : `Loaded ${users.length} user(s)`}
-                </div>
-              )}
-
-              <form onSubmit={handleSubmit} className="space-y-5">
-                {error && <div className="text-red-600 text-sm text-center font-semibold">{error}</div>}
-                {success && <div className="text-green-600 text-sm text-center font-semibold">{success}</div>}
-
-                <div className="relative">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Login as</label>
+                  <motion.label 
+                    className="block text-sm font-semibold text-gray-700 mb-3"
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.5 }}
+                  >
+                    I am a
+                  </motion.label>
                   <div className="relative">
-                    <button
+                    <motion.button
                       type="button"
                       onClick={() => setShowRoleDropdown(!showRoleDropdown)}
-                      className="w-full bg-gray-50 border-2 border-gray-200 rounded-2xl px-6 py-4 text-left focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 flex items-center justify-between hover:bg-gray-100"
+                      className="w-full bg-white/50 backdrop-blur-sm border-2 border-gray-200/50 rounded-2xl px-6 py-4 text-left focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 flex items-center justify-between hover:bg-white/70 hover:border-blue-300/50 group"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.6 }}
+                      whileHover={{ scale: 1.02 }}
                     >
                       <div className="flex items-center gap-3">
-                        {currentRole?.icon && <currentRole.icon className="w-5 h-5 text-gray-600" />}
-                        <span className="font-medium text-gray-900">{currentRole?.label}</span>
+                        {currentRole?.icon && (
+                          <motion.div
+                            animate={{ rotate: [0, 10, -10, 0] }}
+                            transition={{ duration: 2, repeat: Infinity }}
+                          >
+                            <currentRole.icon className="w-5 h-5 text-gray-600 group-hover:text-blue-600 transition-colors duration-300" />
+                          </motion.div>
+                        )}
+                        <span className="font-medium text-gray-900 group-hover:text-blue-600 transition-colors duration-300">{currentRole?.label}</span>
                       </div>
-                      <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform duration-200 ${showRoleDropdown ? 'rotate-180' : ''}`} />
-                    </button>
+                      <motion.div
+                        animate={{ rotate: showRoleDropdown ? 180 : 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <ChevronDown className="w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors duration-300" />
+                      </motion.div>
+                    </motion.button>
                     {showRoleDropdown && (
                       <motion.div
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="absolute top-full left-0 right-0 mt-2 bg-white border-2 border-gray-200 rounded-2xl shadow-xl z-10 overflow-hidden"
+                      <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        className="absolute top-full left-0 right-0 mt-2 bg-white/90 backdrop-blur-lg border-2 border-gray-200/50 rounded-2xl shadow-2xl z-10 overflow-hidden"
                       >
-                      className="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-left focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all duration-200 flex items-center justify-between text-sm hover:border-gray-400"
-                    >
-                      <span className="capitalize">{roles.find(r => r.value === role)?.label}</span>
-                      <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform duration-200 ${showRoleDropdown ? 'rotate-180' : ''}`} />
-                    </button>
-                    {showRoleDropdown && (
-                      <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
                         {roles.map((roleOption) => (
-                          <button
+                          <motion.button
                             key={roleOption.value}
                             type="button"
                             onClick={() => {
                               setRole(roleOption.value);
                               setShowRoleDropdown(false);
                             }}
-                            className="w-full text-left px-6 py-4 hover:bg-gray-50 transition-colors duration-200 flex items-center gap-3"
+                            className="w-full text-left px-6 py-4 hover:bg-blue-50/80 transition-all duration-200 flex items-center gap-3 group"
+                            whileHover={{ x: 5 }}
                           >
-                            <roleOption.icon className="w-5 h-5 text-gray-600" />
-                            <span className="font-medium text-gray-900">{roleOption.label}</span>
-                          </button>
+                            <roleOption.icon className="w-5 h-5 text-gray-600 group-hover:text-blue-600 transition-colors duration-200" />
+                            <span className="font-medium text-gray-900 group-hover:text-blue-600 transition-colors duration-200">{roleOption.label}</span>
+                          </motion.button>
                         ))}
                       </motion.div>
-                            className="w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors duration-200 first:rounded-t-lg last:rounded-b-lg text-sm"
-                          >
-                            {roleOption.label}
-                          </button>
-                        ))}
-                      </div>
+                      </motion.div>
                     )}
                   </div>
                 </div>
@@ -464,38 +395,62 @@ const LoginSection: React.FC = () => {
                 {role === 'student' && (
                   <>
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-3">Admission ID</label>
+                      <motion.label 
+                        className="block text-sm font-semibold text-gray-700 mb-3"
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.7 }}
+                      >
+                        Admission ID
+                      </motion.label>
                       <div className="relative">
-                        <User className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Admission ID</label>
-                      <div className="relative">
-                        <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                        <input
+                        <motion.div
+                          className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5"
+                          animate={{ scale: [1, 1.1, 1] }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                        >
+                          <User className="w-5 h-5" />
+                        </motion.div>
+                        <motion.input
                           type="text"
                           value={admissionId}
                           onChange={e => setAdmissionId(e.target.value)}
-                          className="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white"
-                          className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all duration-200 text-sm hover:border-gray-400"
+                          className="w-full pl-12 pr-4 py-4 border-2 border-gray-200/50 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-white/50 backdrop-blur-sm hover:bg-white/70 focus:bg-white/80"
                           placeholder="Enter your Admission ID"
                           required
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.8 }}
                         />
                       </div>
                     </div>
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-3">Password</label>
+                      <motion.label 
+                        className="block text-sm font-semibold text-gray-700 mb-3"
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.9 }}
+                      >
+                        Password
+                      </motion.label>
                       <div className="relative">
-                        <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                      <div className="relative">
-                        <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                        <input
+                        <motion.div
+                          className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5"
+                          animate={{ rotate: [0, 5, -5, 0] }}
+                          transition={{ duration: 3, repeat: Infinity }}
+                        >
+                          <Lock className="w-5 h-5" />
+                        </motion.div>
+                        <motion.input
                           type="password"
                           value={password}
                           onChange={e => setPassword(e.target.value)}
-                          className="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white"
-                          className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all duration-200 text-sm hover:border-gray-400"
+                          className="w-full pl-12 pr-4 py-4 border-2 border-gray-200/50 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 bg-white/50 backdrop-blur-sm hover:bg-white/70 focus:bg-white/80"
                           placeholder="Enter your password"
                           required
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 1.0 }}
                         />
                       </div>
                     </div>
@@ -505,38 +460,62 @@ const LoginSection: React.FC = () => {
                 {role === 'teacher' && (
                   <>
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-3">Teacher ID</label>
+                      <motion.label 
+                        className="block text-sm font-semibold text-gray-700 mb-3"
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.7 }}
+                      >
+                        Teacher ID
+                      </motion.label>
                       <div className="relative">
-                        <User className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Teacher ID</label>
-                      <div className="relative">
-                        <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                        <input
+                        <motion.div
+                          className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5"
+                          animate={{ scale: [1, 1.1, 1] }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                        >
+                          <User className="w-5 h-5" />
+                        </motion.div>
+                        <motion.input
                           type="text"
                           value={teacherId}
                           onChange={e => setTeacherId(e.target.value)}
-                          className="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white"
-                          className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all duration-200 text-sm hover:border-gray-400"
+                          className="w-full pl-12 pr-4 py-4 border-2 border-gray-200/50 rounded-2xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300 bg-white/50 backdrop-blur-sm hover:bg-white/70 focus:bg-white/80"
                           placeholder="Enter your Teacher ID"
                           required
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.8 }}
                         />
                       </div>
                     </div>
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-3">Password</label>
+                      <motion.label 
+                        className="block text-sm font-semibold text-gray-700 mb-3"
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.9 }}
+                      >
+                        Password
+                      </motion.label>
                       <div className="relative">
-                        <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                      <div className="relative">
-                        <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                        <input
+                        <motion.div
+                          className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5"
+                          animate={{ rotate: [0, 5, -5, 0] }}
+                          transition={{ duration: 3, repeat: Infinity }}
+                        >
+                          <Lock className="w-5 h-5" />
+                        </motion.div>
+                        <motion.input
                           type="password"
                           value={password}
                           onChange={e => setPassword(e.target.value)}
-                          className="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white"
-                          className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all duration-200 text-sm hover:border-gray-400"
+                          className="w-full pl-12 pr-4 py-4 border-2 border-gray-200/50 rounded-2xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300 bg-white/50 backdrop-blur-sm hover:bg-white/70 focus:bg-white/80"
                           placeholder="Enter your password"
                           required
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 1.0 }}
                         />
                       </div>
                     </div>
@@ -546,38 +525,62 @@ const LoginSection: React.FC = () => {
                 {role === 'admin' && (
                   <>
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-3">Email Address</label>
+                      <motion.label 
+                        className="block text-sm font-semibold text-gray-700 mb-3"
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.7 }}
+                      >
+                        Email Address
+                      </motion.label>
                       <div className="relative">
-                        <User className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                      <div className="relative">
-                        <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                        <input
+                        <motion.div
+                          className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5"
+                          animate={{ scale: [1, 1.1, 1] }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                        >
+                          <User className="w-5 h-5" />
+                        </motion.div>
+                        <motion.input
                           type="email"
                           value={email}
                           onChange={e => setEmail(e.target.value)}
-                          className="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white"
-                          className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all duration-200 text-sm hover:border-gray-400"
+                          className="w-full pl-12 pr-4 py-4 border-2 border-gray-200/50 rounded-2xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 bg-white/50 backdrop-blur-sm hover:bg-white/70 focus:bg-white/80"
                           placeholder="Enter your email"
                           required
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.8 }}
                         />
                       </div>
                     </div>
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-3">Password</label>
+                      <motion.label 
+                        className="block text-sm font-semibold text-gray-700 mb-3"
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.9 }}
+                      >
+                        Password
+                      </motion.label>
                       <div className="relative">
-                        <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                      <div className="relative">
-                        <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                        <input
+                        <motion.div
+                          className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5"
+                          animate={{ rotate: [0, 5, -5, 0] }}
+                          transition={{ duration: 3, repeat: Infinity }}
+                        >
+                          <Lock className="w-5 h-5" />
+                        </motion.div>
+                        <motion.input
                           type="password"
                           value={password}
                           onChange={e => setPassword(e.target.value)}
-                          className="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 bg-gray-50 hover:bg-white"
-                          className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all duration-200 text-sm hover:border-gray-400"
+                          className="w-full pl-12 pr-4 py-4 border-2 border-gray-200/50 rounded-2xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 bg-white/50 backdrop-blur-sm hover:bg-white/70 focus:bg-white/80"
                           placeholder="Enter your password"
                           required
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 1.0 }}
                         />
                       </div>
                     </div>
@@ -587,10 +590,21 @@ const LoginSection: React.FC = () => {
                 <motion.button
                   type="submit"
                   disabled={loading}
-                  whileHover={{ scale: 1.02 }}
+                  whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.98 }}
-                  className={`w-full ${loading ? 'bg-gray-400 cursor-not-allowed' : `bg-gradient-to-r ${currentRole?.color} hover:shadow-xl`} text-white py-4 rounded-2xl font-bold transition-all duration-300 shadow-lg flex items-center justify-center space-x-2`}
+                  className={`relative w-full ${loading ? 'bg-gray-400 cursor-not-allowed' : `bg-gradient-to-r ${currentRole?.color} hover:shadow-2xl`} text-white py-5 rounded-2xl font-bold transition-all duration-500 shadow-xl flex items-center justify-center space-x-3 overflow-hidden group`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.2 }}
                 >
+                  {/* Animated background */}
+                  {!loading && (
+                    <>
+                      <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 transform translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-1000" />
+                    </>
+                  )}
+                  
                   {loading ? (
                     <>
                       <LoadingSpinner size="sm" />
@@ -598,39 +612,40 @@ const LoginSection: React.FC = () => {
                     </>
                   ) : (
                     <>
-                      <LogIn className="w-5 h-5" />
+                      <motion.div
+                        animate={{ rotate: [0, 360] }}
+                        transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                      >
+                        <LogIn className="w-6 h-6" />
+                      </motion.div>
                       <span>Sign In</span>
                     </>
                   )}
                 </motion.button>
               </form>
 
-              <div className="mt-8 text-center">
-                <div className="bg-blue-50 rounded-2xl p-4">
-                  <p className="text-sm text-blue-800 font-medium mb-2">Demo Credentials</p>
-                  <div className="text-xs text-blue-600 space-y-1">
+              <motion.div 
+                className="mt-8 text-center"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.4 }}
+              >
+                <GlassCard gradient="blue" className="p-6">
+                  <div className="flex items-center justify-center gap-2 mb-3">
+                    <Sparkles className="w-4 h-4 text-blue-600" />
+                    <p className="text-sm text-blue-800 font-semibold">Demo Credentials</p>
+                    <Sparkles className="w-4 h-4 text-blue-600" />
+                  </div>
+                  <div className="text-xs text-blue-700 space-y-2">
                     <p><strong>Student:</strong> himanshu123 / 123</p>
                     <p><strong>Teacher:</strong> Avinash / abc</p>
                   </div>
-                </div>
-              </div>
-            </motion.div>
-                {/* Submit Button */}
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className={`w-full ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-gray-900 hover:bg-gray-800'} text-white py-3 rounded-lg font-medium transition-all duration-300 transform ${loading ? '' : 'hover:scale-105'} text-sm shadow-lg`}
-                >
-                  {loading ? 'Loading users...' : 'Sign In'}
-                </button>
-              </form>
-            </div>
+                </GlassCard>
+              </motion.div>
+            </GlassCard>
           )}
+import toast from 'react-hot-toast';
         </div>
       </div>
-    </section>
-  );
-};
-
-export default LoginSection;
+import LoadingSpinner from './ui/LoadingSpinner';
 export default LoginSection;
