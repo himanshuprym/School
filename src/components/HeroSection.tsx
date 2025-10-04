@@ -8,7 +8,7 @@ import FloatingButton from './ui/FloatingButton';
 
 const HeroSection: React.FC = () => {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 min-h-screen flex items-center">
+    <section className="relative overflow-hidden bg-gradient-to-br from-blue-900 via-sky-800 to-cyan-900 min-h-screen flex items-center">
       {/* Enhanced animated background */}
       <AnimatedBackground variant="particles" />
       
@@ -16,7 +16,7 @@ const HeroSection: React.FC = () => {
       <div className="absolute inset-0">
         <div className="absolute -top-40 -right-40 w-[800px] h-[800px] bg-gradient-to-br from-yellow-400/30 to-orange-500/20 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute -bottom-40 -left-40 w-[800px] h-[800px] bg-gradient-to-tr from-blue-500/30 to-cyan-400/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full blur-3xl animate-pulse delay-500"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-gradient-to-r from-green-500/15 to-emerald-500/15 rounded-full blur-3xl animate-pulse delay-500"></div>
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10 px-4 sm:px-6 lg:px-8">
@@ -57,8 +57,8 @@ const HeroSection: React.FC = () => {
               >
                 Shakti Shanti
               </motion.span>
-              <motion.span 
-                className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-400 animate-pulse"
+              <motion.span
+                className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-orange-400 to-amber-500"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.7, duration: 0.8, type: "spring" }}
@@ -259,9 +259,9 @@ const HeroSection: React.FC = () => {
             {[
               { icon: BookOpen, position: 'top-16 left-12 lg:top-20 lg:left-16', gradient: 'blue', rotation: 12, delay: 0 },
               { icon: Star, position: 'top-32 right-16 lg:top-40 lg:right-20', gradient: 'green', rotation: -10, delay: 0.5 },
-              { icon: Award, position: 'bottom-20 left-20 lg:bottom-24 lg:left-24', gradient: 'purple', rotation: 15, delay: 1 },
+              { icon: Award, position: 'bottom-20 left-20 lg:bottom-24 lg:left-24', gradient: 'green', rotation: 15, delay: 1 },
               { icon: Users, position: 'bottom-32 right-12 lg:bottom-40 lg:right-16', gradient: 'orange', rotation: -15, delay: 1.5 },
-              { icon: Heart, position: 'top-1/2 left-8 lg:left-12', gradient: 'pink', rotation: 20, delay: 2 },
+              { icon: Heart, position: 'top-1/2 left-8 lg:left-12', gradient: 'orange', rotation: 20, delay: 2 },
               { icon: Lightbulb, position: 'top-1/2 right-8 lg:right-12', gradient: 'yellow', rotation: -20, delay: 2.5 }
             ].map((item, index) => (
               <motion.div

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { TrendingUp, Users, GraduationCap, Award, BookOpen, Calendar, Bell, Target } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { supabase } from '../lib/supabase';
-import StatCard from './ui/StatCard';
 import AnimatedCounter from './ui/AnimatedCounter';
 
 const StatsSection: React.FC = () => {
@@ -30,7 +29,7 @@ const StatsSection: React.FC = () => {
           events: eventsRes.count || 15
         });
       } catch (error) {
-        // Keep default values
+        console.log('Using default stats');
       }
     };
 
@@ -53,48 +52,34 @@ const StatsSection: React.FC = () => {
       icon: GraduationCap,
       isCounter: true,
       color: 'from-green-500 to-green-600'
-import React from 'react';
-import { TrendingUp } from 'lucide-react';
-
-const StatsSection: React.FC = () => {
-  const stats = [
-    {
-      number: '1,800+',
-      label: 'Active Students',
-      description: 'Currently enrolled across all programs',
     },
     {
-      number: '81+',
-      label: 'Expert Teachers',
-      description: 'Qualified educators with advanced degrees',
-    },
-    {
-      number: '95%',
+      number: 95,
       label: 'Success Rate',
       description: 'Students achieving their academic goals',
       icon: Award,
       isCounter: false,
-      color: 'from-yellow-500 to-yellow-600'
+      color: 'from-yellow-500 to-yellow-600',
+      suffix: '%'
     },
     {
-      number: '25+',
+      number: 25,
       label: 'Years Excellence',
       description: 'Proven track record in education',
       icon: BookOpen,
       isCounter: false,
-      color: 'from-purple-500 to-purple-600'
+      color: 'from-orange-500 to-orange-600',
+      suffix: '+'
     },
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 relative overflow-hidden">
-      {/* Animated background */}
+    <section className="py-20 bg-gradient-to-br from-slate-900 via-blue-900 to-sky-900 relative overflow-hidden">
       <div className="absolute inset-0">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-yellow-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-3xl animate-pulse delay-500"></div>
-        
-        {/* Floating elements */}
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-green-500/5 rounded-full blur-3xl animate-pulse delay-500"></div>
+
         {[...Array(15)].map((_, i) => (
           <motion.div
             key={i}
@@ -121,6 +106,7 @@ const StatsSection: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
           className="text-center mb-16"
         >
           <div className="flex items-center justify-center mb-8">
@@ -139,7 +125,7 @@ const StatsSection: React.FC = () => {
             </div>
           </div>
           <p className="text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed">
-            These statistics reflect our unwavering commitment to educational excellence 
+            These statistics reflect our unwavering commitment to educational excellence
             and the success of our students over 25+ years.
           </p>
         </motion.div>
@@ -150,6 +136,7 @@ const StatsSection: React.FC = () => {
               key={index}
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               whileHover={{ scale: 1.05, y: -10 }}
               className="group text-center"
@@ -162,19 +149,19 @@ const StatsSection: React.FC = () => {
                 >
                   <stat.icon className="w-8 h-8 text-white" />
                 </motion.div>
-                
+
                 <div className="text-4xl md:text-5xl font-bold text-yellow-400 mb-3 group-hover:scale-110 transition-transform duration-300">
                   {stat.isCounter && typeof stat.number === 'number' ? (
-                    <AnimatedCounter end={stat.number} suffix="+" />
+                    <AnimatedCounter end={stat.number} suffix={stat.suffix || '+'} />
                   ) : (
-                    stat.number
+                    `${stat.number}${stat.suffix || ''}`
                   )}
                 </div>
-                
+
                 <h3 className="text-lg font-semibold text-white mb-3 group-hover:text-yellow-200 transition-colors duration-300">
                   {stat.label}
                 </h3>
-                
+
                 <p className="text-blue-200 text-sm leading-relaxed group-hover:text-blue-100 transition-colors duration-300">
                   {stat.description}
                 </p>
@@ -183,14 +170,14 @@ const StatsSection: React.FC = () => {
           ))}
         </div>
 
-        {/* Additional metrics */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.4 }}
           className="grid grid-cols-1 md:grid-cols-3 gap-8"
         >
-          <div className="text-center bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+          <div className="text-center bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-yellow-400/30 transition-all duration-300">
             <div className="flex items-center justify-center mb-4">
               <Bell className="w-8 h-8 text-yellow-400" />
             </div>
@@ -199,8 +186,8 @@ const StatsSection: React.FC = () => {
             </div>
             <p className="text-blue-200">Active Notices</p>
           </div>
-          
-          <div className="text-center bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+
+          <div className="text-center bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-yellow-400/30 transition-all duration-300">
             <div className="flex items-center justify-center mb-4">
               <Calendar className="w-8 h-8 text-yellow-400" />
             </div>
@@ -209,8 +196,8 @@ const StatsSection: React.FC = () => {
             </div>
             <p className="text-blue-200">Upcoming Events</p>
           </div>
-          
-          <div className="text-center bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+
+          <div className="text-center bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-yellow-400/30 transition-all duration-300">
             <div className="flex items-center justify-center mb-4">
               <Target className="w-8 h-8 text-yellow-400" />
             </div>
@@ -218,40 +205,6 @@ const StatsSection: React.FC = () => {
             <p className="text-blue-200">Affiliated Board</p>
           </div>
         </motion.div>
-    <section className="bg-gradient-to-r from-gray-900 to-gray-800 py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <div className="flex items-center justify-center mb-4">
-            <TrendingUp className="w-8 h-8 text-yellow-400 mr-3" />
-            <h2 className="text-2xl md:text-3xl font-bold text-white">
-              Our Impact by Numbers
-            </h2>
-          </div>
-          <p className="text-lg text-gray-300 max-w-3xl mx-auto">
-            These statistics reflect our commitment to educational excellence and student success.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-          {stats.map((stat, index) => (
-            <div
-              key={index}
-              className="text-center group hover:scale-105 transition-transform duration-300"
-            >
-              <div className="bg-gray-800 rounded-lg p-6 border border-gray-700 group-hover:border-yellow-400 transition-colors duration-300">
-                <div className="text-3xl md:text-4xl font-bold text-yellow-400 mb-3 group-hover:scale-110 transition-transform duration-300">
-                  {stat.number}
-                </div>
-                <h3 className="text-lg font-semibold text-white mb-2">
-                  {stat.label}
-                </h3>
-                <p className="text-gray-400 text-sm leading-relaxed">
-                  {stat.description}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
       </div>
     </section>
   );

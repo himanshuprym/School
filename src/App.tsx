@@ -6,6 +6,7 @@ import HeroSection from './components/HeroSection';
 import LoginSection from './components/LoginSection';
 import FeaturesSection from './components/FeaturesSection';
 import StatsSection from './components/StatsSection';
+import TestimonialsSection from './components/TestimonialsSection';
 import Footer from './components/Footer';
 import About from './components/pages/About';
 import Neev from './components/pages/NEEV';
@@ -44,6 +45,7 @@ function App() {
                   <LoginSection />
                   <FeaturesSection />
                   <StatsSection />
+                  <TestimonialsSection />
                 </motion.div>
               } />
               <Route path="/about" element={
